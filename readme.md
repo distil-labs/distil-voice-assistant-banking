@@ -3,7 +3,7 @@
 *A fine-tuned small language model that handles banking intent routing at ~40ms, cutting voice pipeline latency from ~850ms to ~315ms.*
 
 <p align="center">
-  <img src="voice-assistant-banner.png" alt="VoiceTeller - Banking Voice Assistant" width="600">
+  <img src="voice-assistant-banner.svg" alt="VoiceTeller - Banking Voice Assistant" width="600">
 </p>
 
 You're building a voice assistant. You wire up a cloud LLM for the "brain" stage, and it works. But the 375-750ms inference latency makes every conversation feel sluggish. Users notice. For banking workflows with defined intents and bounded slot types, you don't need a general-purpose 100B+ model. You need a fast, accurate specialist.

@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" width="900" height="380">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0e1a;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#0f1629;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#0a0e1a;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#34d399;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="pipelineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.6"/>
+      <stop offset="50%" style="stop-color:#10b981;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.6"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <!-- Noise texture -->
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.04"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" mode="overlay"/>
+    </filter>
+    <!-- Soundwave clip for mic icon -->
+    <clipPath id="roundedBox">
+      <rect x="0" y="0" width="900" height="380" rx="12"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <g clip-path="url(#roundedBox)">
+    <rect width="900" height="380" fill="url(#bgGrad)"/>
+
+    <!-- Subtle grid -->
+    <g opacity="0.04" stroke="#60a5fa" stroke-width="0.5">
+      <line x1="0" y1="0" x2="0" y2="380"/><line x1="60" y1="0" x2="60" y2="380"/>
+      <line x1="120" y1="0" x2="120" y2="380"/><line x1="180" y1="0" x2="180" y2="380"/>
+      <line x1="240" y1="0" x2="240" y2="380"/><line x1="300" y1="0" x2="300" y2="380"/>
+      <line x1="360" y1="0" x2="360" y2="380"/><line x1="420" y1="0" x2="420" y2="380"/>
+      <line x1="480" y1="0" x2="480" y2="380"/><line x1="540" y1="0" x2="540" y2="380"/>
+      <line x1="600" y1="0" x2="600" y2="380"/><line x1="660" y1="0" x2="660" y2="380"/>
+      <line x1="720" y1="0" x2="720" y2="380"/><line x1="780" y1="0" x2="780" y2="380"/>
+      <line x1="840" y1="0" x2="840" y2="380"/><line x1="900" y1="0" x2="900" y2="380"/>
+      <line x1="0" y1="60" x2="900" y2="60"/><line x1="0" y1="120" x2="900" y2="120"/>
+      <line x1="0" y1="180" x2="900" y2="180"/><line x1="0" y1="240" x2="900" y2="240"/>
+      <line x1="0" y1="300" x2="900" y2="300"/><line x1="0" y1="360" x2="900" y2="360"/>
+    </g>
+
+    <!-- Decorative blurred orbs -->
+    <circle cx="120" cy="80" r="120" fill="#3b82f6" opacity="0.06"/>
+    <circle cx="780" cy="300" r="140" fill="#10b981" opacity="0.05"/>
+    <circle cx="450" cy="190" r="200" fill="#3b82f6" opacity="0.025"/>
+
+    <!-- ===== TITLE SECTION ===== -->
+
+    <!-- Mic icon -->
+    <g transform="translate(200, 38)">
+      <rect x="0" y="0" width="18" height="28" rx="9" fill="none" stroke="#60a5fa" stroke-width="2" opacity="0.9"/>
+      <path d="M-5 22 C-5 36 23 36 23 22" fill="none" stroke="#60a5fa" stroke-width="2" opacity="0.9"/>
+      <line x1="9" y1="36" x2="9" y2="44" stroke="#60a5fa" stroke-width="2" opacity="0.9"/>
+      <line x1="2" y1="44" x2="16" y2="44" stroke="#60a5fa" stroke-width="2" opacity="0.9"/>
+    </g>
+
+    <!-- Title -->
+    <text x="235" y="72" font-family="'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif" font-size="42" font-weight="700" fill="#f0f4ff" letter-spacing="-1">VoiceTeller</text>
+
+    <!-- Subtitle -->
+    <text x="450" y="110" font-family="'SF Pro Text', 'Helvetica Neue', 'Segoe UI', sans-serif" font-size="16" fill="#94a3b8" text-anchor="middle" letter-spacing="0.3">Replace the LLM in your voice assistant with a 0.6B model</text>
+
+    <!-- ===== PIPELINE SECTION ===== -->
+
+    <!-- Pipeline container -->
+    <rect x="60" y="140" width="780" height="90" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1" opacity="0.8"/>
+
+    <!-- ASR Box -->
+    <rect x="90" y="158" width="170" height="54" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+    <text x="175" y="180" font-family="'SF Mono', 'Fira Code', monospace" font-size="13" font-weight="600" fill="#60a5fa" text-anchor="middle">ASR</text>
+    <text x="175" y="200" font-family="'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="11" fill="#64748b" text-anchor="middle">~200ms</text>
+
+    <!-- Arrow 1 -->
+    <line x1="272" y1="185" x2="325" y2="185" stroke="#334155" stroke-width="1.5"/>
+    <polygon points="325,181 333,185 325,189" fill="#334155"/>
+
+    <!-- SLM Box (highlighted) -->
+    <rect x="340" y="152" width="220" height="66" rx="6" fill="#0f172a" stroke="url(#greenGrad)" stroke-width="2"/>
+    <rect x="340" y="152" width="220" height="66" rx="6" fill="#10b981" opacity="0.06"/>
+    <text x="450" y="177" font-family="'SF Mono', 'Fira Code', monospace" font-size="14" font-weight="700" fill="#34d399" text-anchor="middle">SLM (0.6B)</text>
+    <text x="450" y="197" font-family="'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="12" fill="#34d399" text-anchor="middle" opacity="0.8">~40ms</text>
+    <!-- Crossed out LLM time -->
+    <g opacity="0.45">
+      <text x="450" y="210" font-family="'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="10" fill="#ef4444" text-anchor="middle">was 375-750ms</text>
+      <line x1="410" y1="207" x2="490" y2="207" stroke="#ef4444" stroke-width="0.8"/>
+    </g>
+
+    <!-- Arrow 2 -->
+    <line x1="572" y1="185" x2="625" y2="185" stroke="#334155" stroke-width="1.5"/>
+    <polygon points="625,181 633,185 625,189" fill="#334155"/>
+
+    <!-- TTS Box -->
+    <rect x="640" y="158" width="170" height="54" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+    <text x="725" y="180" font-family="'SF Mono', 'Fira Code', monospace" font-size="13" font-weight="600" fill="#60a5fa" text-anchor="middle">TTS</text>
+    <text x="725" y="200" font-family="'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="11" fill="#64748b" text-anchor="middle">~75ms</text>
+
+    <!-- ===== STATS ROW ===== -->
+
+    <!-- Stat boxes -->
+    <!-- Total Latency -->
+    <rect x="60" y="252" width="240" height="80" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1" opacity="0.8"/>
+    <text x="180" y="280" font-family="'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="11" fill="#64748b" text-anchor="middle" letter-spacing="1.5" text-transform="uppercase">TOTAL LATENCY</text>
+    <text x="180" y="314" font-family="'SF Mono', 'Fira Code', monospace" font-size="28" font-weight="700" fill="#34d399" text-anchor="middle">~315ms</text>
+
+    <!-- Model Size -->
+    <rect x="330" y="252" width="240" height="80" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1" opacity="0.8"/>
+    <text x="450" y="280" font-family="'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="11" fill="#64748b" text-anchor="middle" letter-spacing="1.5">MODEL SIZE</text>
+    <text x="450" y="314" font-family="'SF Mono', 'Fira Code', monospace" font-size="28" font-weight="700" fill="#60a5fa" text-anchor="middle">200x</text>
+    <text x="450" y="326" font-family="'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="10" fill="#64748b" text-anchor="middle">smaller than teacher</text>
+
+    <!-- Accuracy -->
+    <rect x="600" y="252" width="240" height="80" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1" opacity="0.8"/>
+    <text x="720" y="280" font-family="'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="11" fill="#64748b" text-anchor="middle" letter-spacing="1.5">ACCURACY</text>
+    <text x="720" y="314" font-family="'SF Mono', 'Fira Code', monospace" font-size="28" font-weight="700" fill="#f0f4ff" text-anchor="middle">90.4%</text>
+    <text x="720" y="326" font-family="'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="10" fill="#64748b" text-anchor="middle">beats 120B teacher (87.5%)</text>
+
+    <!-- Bottom line: Built with Distil Labs -->
+    <text x="450" y="362" font-family="'SF Pro Text', 'Helvetica Neue', sans-serif" font-size="12" fill="#475569" text-anchor="middle">
+      Built with Distil Labs  ·  distillabs.ai
+    </text>
+
+    <!-- Noise overlay -->
+    <rect width="900" height="380" filter="url(#noise)" opacity="0.4"/>
+  </g>
+</svg>
