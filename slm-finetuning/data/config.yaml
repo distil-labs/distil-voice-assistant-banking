@@ -1,0 +1,6 @@
+base:
+  task: multi-turn-tool-calling-closed-book
+  student_model_name: Qwen3-0.6B
+  teacher_model_name: openai.gpt-oss-120b
+synthgen:
+  parallel_llm_calls: true
