@@ -1,33 +1,14 @@
-# Dataset Analysis: Banking Voice Assistant SLM
+# Dataset Analysis: Banking Voice Assistant SLM (v2)
 
 ## Overview
 
 | Metric | Train | Test |
 |--------|-------|------|
-| Total Examples | 62 | 61 |
+| Total Conversations | 50 | 50 |
+| Format | Complete multi-turn conversations | Complete multi-turn conversations |
+| Ending pattern | All end with `goodbye` | All end with `goodbye` |
 
----
-
-## Function Distribution
-
-| Function | Train | Test | Train % | Test % |
-|----------|-------|------|---------|--------|
-| check_balance | 8 | 7 | 12.9% | 11.5% |
-| transfer_money | 7 | 7 | 11.3% | 11.5% |
-| pay_bill | 6 | 7 | 9.7% | 11.5% |
-| cancel_card | 5 | 5 | 8.1% | 8.2% |
-| get_statement | 5 | 5 | 8.1% | 8.2% |
-| speak_to_human | 5 | 5 | 8.1% | 8.2% |
-| replace_card | 4 | 4 | 6.5% | 6.6% |
-| report_fraud | 4 | 4 | 6.5% | 6.6% |
-| reset_pin | 4 | 4 | 6.5% | 6.6% |
-| activate_card | 3 | 3 | 4.8% | 4.9% |
-| greeting | 3 | 2 | 4.8% | 3.3% |
-| intent_unclear | 3 | 3 | 4.8% | 4.9% |
-| goodbye | 3 | 3 | 4.8% | 4.9% |
-| thank_you | 2 | 2 | 3.2% | 3.3% |
-
-**Coverage:** All 14 functions are represented in both datasets.
+All single-turn conversations have been removed. Every conversation is 2-5 turns and represents a complete user interaction from start to finish, ending with `thank_you → goodbye` or just `goodbye`.
 
 ---
 
@@ -37,24 +18,37 @@ Number of user turns per conversation:
 
 | Turns | Train | Test | Train % | Test % |
 |-------|-------|------|---------|--------|
-| 1 (single-turn) | 40 | 37 | 64.5% | 60.7% |
-| 2 (two-turn) | 18 | 20 | 29.0% | 32.8% |
-| 3 (three-turn) | 4 | 4 | 6.5% | 6.6% |
+| 2 | 1 | 1 | 2% | 2% |
+| 3 | 14 | 13 | 28% | 26% |
+| 4 | 26 | 24 | 52% | 48% |
+| 5 | 9 | 12 | 18% | 24% |
 
-**Improvement:** Multi-turn examples increased from ~25% to ~35% of the dataset, with 3-turn conversations now at 6.5% (up from 2%).
+The majority of conversations are 3-4 turns, with a good representation of 5-turn conversations for complex multi-step interactions.
 
 ---
 
-## User Message Length Statistics
+## Function Distribution (All Calls)
 
-Character count of the final user message in each conversation:
+Counts include all tool calls across entire conversations (intermediate + final).
 
-| Statistic | Train | Test |
-|-----------|-------|------|
-| Min | 3 | 10 |
-| Max | 68 | 55 |
-| Mean | 29.7 | 27.0 |
-| Median | 28.5 | 24.0 |
+| Function | Train | Test | Train % | Test % |
+|----------|-------|------|---------|--------|
+| goodbye | 50 | 50 | 25.9% | 25.4% |
+| thank_you | 32 | 33 | 16.6% | 16.8% |
+| greeting | 26 | 28 | 13.5% | 14.2% |
+| transfer_money | 14 | 12 | 7.3% | 6.1% |
+| check_balance | 13 | 14 | 6.7% | 7.1% |
+| cancel_card | 12 | 10 | 6.2% | 5.1% |
+| pay_bill | 8 | 10 | 4.1% | 5.1% |
+| report_fraud | 9 | 6 | 4.7% | 3.0% |
+| get_statement | 6 | 9 | 3.1% | 4.6% |
+| reset_pin | 6 | 5 | 3.1% | 2.5% |
+| replace_card | 5 | 6 | 2.6% | 3.0% |
+| speak_to_human | 5 | 6 | 2.6% | 3.0% |
+| activate_card | 4 | 5 | 2.1% | 2.5% |
+| intent_unclear | 3 | 3 | 1.6% | 1.5% |
+
+**Coverage:** All 14 functions are represented in both datasets.
 
 ---
 
@@ -65,122 +59,136 @@ Character count of the final user message in each conversation:
 **check_balance**
 | Parameter | Train | Test |
 |-----------|-------|------|
-| account_type | 6/8 (75%) | 5/7 (71%) |
+| account_type | 12/13 (92%) | 12/14 (86%) |
 
 **get_statement**
 | Parameter | Train | Test |
 |-----------|-------|------|
-| account_type | 5/5 (100%) | 5/5 (100%) |
-| period | 4/5 (80%) | 4/5 (80%) |
+| account_type | 5/6 (83%) | 7/9 (78%) |
+| period | 5/6 (83%) | 6/9 (67%) |
 
 ### Transfer Functions
 
 **transfer_money**
 | Parameter | Train | Test |
 |-----------|-------|------|
-| amount | 7/7 (100%) | 7/7 (100%) |
-| from_account | 7/7 (100%) | 7/7 (100%) |
-| to_account | 7/7 (100%) | 7/7 (100%) |
+| amount | 12/14 (86%) | 10/12 (83%) |
+| from_account | 10/14 (71%) | 9/12 (75%) |
+| to_account | 10/14 (71%) | 11/12 (92%) |
 
 ### Card Functions
 
 **cancel_card**
 | Parameter | Train | Test |
 |-----------|-------|------|
-| card_type | 5/5 (100%) | 5/5 (100%) |
-| card_last_four | 4/5 (80%) | 4/5 (80%) |
-| reason | 2/5 (40%) | 2/5 (40%) |
+| card_type | 10/12 (83%) | 8/10 (80%) |
+| card_last_four | 7/12 (58%) | 6/10 (60%) |
+| reason | 7/12 (58%) | 6/10 (60%) |
 
 **replace_card**
 | Parameter | Train | Test |
 |-----------|-------|------|
-| card_type | 3/4 (75%) | 4/4 (100%) |
-| card_last_four | 2/4 (50%) | 2/4 (50%) |
+| card_type | 4/5 (80%) | 5/6 (83%) |
+| card_last_four | 3/5 (60%) | 4/6 (67%) |
 
 **activate_card**
 | Parameter | Train | Test |
 |-----------|-------|------|
-| card_last_four | 2/3 (67%) | 2/3 (67%) |
+| card_last_four | 3/4 (75%) | 3/5 (60%) |
 
 **report_fraud**
 | Parameter | Train | Test |
 |-----------|-------|------|
-| card_type | 4/4 (100%) | 4/4 (100%) |
-| card_last_four | 1/4 (25%) | 1/4 (25%) |
-| transaction_amount | 3/4 (75%) | 3/4 (75%) |
+| card_type | 7/9 (78%) | 5/6 (83%) |
+| card_last_four | 2/9 (22%) | 2/6 (33%) |
+| transaction_amount | 4/9 (44%) | 3/6 (50%) |
 
 **reset_pin**
 | Parameter | Train | Test |
 |-----------|-------|------|
-| card_type | 3/4 (75%) | 3/4 (75%) |
-| card_last_four | 2/4 (50%) | 2/4 (50%) |
+| card_type | 4/6 (67%) | 3/5 (60%) |
+| card_last_four | 2/6 (33%) | 2/5 (40%) |
 
 ### Payment Functions
 
 **pay_bill**
 | Parameter | Train | Test |
 |-----------|-------|------|
-| payee | 6/6 (100%) | 7/7 (100%) |
-| amount | 5/6 (83%) | 6/7 (86%) |
-| from_account | 1/6 (17%) | 2/7 (29%) |
+| payee | 6/8 (75%) | 8/10 (80%) |
+| amount | 6/8 (75%) | 7/10 (70%) |
+| from_account | 4/8 (50%) | 3/10 (30%) |
 
 ### Support Functions
 
 **speak_to_human**
 | Parameter | Train | Test |
 |-----------|-------|------|
-| department | 3/5 (60%) | 3/5 (60%) |
+| department | 4/5 (80%) | 5/6 (83%) |
 
 ### Dialogue Control Functions
 
 | Function | Parameters | Train | Test |
 |----------|------------|-------|------|
-| greeting | (none) | 3 | 2 |
-| goodbye | (none) | 3 | 3 |
-| thank_you | (none) | 2 | 2 |
+| greeting | (none) | 26 | 28 |
+| goodbye | (none) | 50 | 50 |
+| thank_you | (none) | 32 | 33 |
 | intent_unclear | (none) | 3 | 3 |
 
 ---
 
 ## Multi-Turn Slot-Filling Patterns
 
-The dataset includes various multi-turn patterns:
+The dataset includes conversations where users provide information incrementally, with the model issuing updated tool calls as more details arrive.
 
-### Pattern: User provides incomplete info → Model generates partial call → User completes
-- transfer_money: amount only → add accounts
-- transfer_money: destination only → add amount and source
-- cancel_card: card_type only → add last_four
-- pay_bill: amount only → add payee
-- pay_bill: payee only → add amount
-- report_fraud: generic → add card_type → add amount
-- reset_pin: generic → add card_type → add last_four
-- get_statement: period only → add account_type
-- replace_card: last_four only → add card_type
+### 2-step slot filling
+- `transfer_money({}) → transfer_money({amount, from, to})`
+- `cancel_card({type}) → cancel_card({type, last_four, reason})`
+- `activate_card({}) → activate_card({last_four})`
+- `reset_pin({}) → reset_pin({type})`
+- `replace_card({}) → replace_card({type, last_four})`
+- `report_fraud({type}) → report_fraud({type, last_four, amount})`
+- `get_statement({}) → get_statement({account, period})`
+- `pay_bill({}) → pay_bill({payee, amount})`
+- `check_balance({}) → check_balance({account_type})`
 
-### Pattern: 3-turn progressive slot filling
-- transfer_money: generic → amount + source → destination
-- report_fraud: generic → card_type → transaction_amount
-- reset_pin: generic → card_type → card_last_four
-- get_statement: generic → account_type → period
+### 3-step progressive slot filling
+- `transfer_money({}) → transfer_money({amount, from}) → transfer_money({amount, from, to})`
+- `report_fraud({}) → report_fraud({type}) → report_fraud({type, amount})`
+- `cancel_card({}) → cancel_card({type, last_four}) → cancel_card({type, last_four, reason})`
+- `pay_bill({}) → pay_bill({payee}) → pay_bill({payee, amount, from})`
+
+### Multi-operation conversations
+- `check_balance → transfer_money` (check then move funds)
+- `cancel_card → replace_card` (cancel then request replacement)
+- `report_fraud → speak_to_human` (report then escalate)
+- `pay_bill → get_statement` (pay then request statement)
+- `check_balance → check_balance` (check multiple accounts)
+
+### Topic switches
+- `cancel_card → check_balance` (user changes mind)
+- `report_fraud → check_balance` (user pivots)
+- `intent_unclear → greeting → check_balance` (user recovers)
+
+---
+
+## ASR Artifact Coverage
+
+~30% of conversations include realistic speech-to-text transcription artifacts:
+
+| Artifact Type | Examples |
+|--------------|----------|
+| Filler words | "uh", "um", "like" |
+| Word splits | "cred it", "dead it", "save ins", "checkin" |
+| Homophones/errors | "ballets" (balance), "stolin" (stolen), "trans fur" (transfer) |
+| False starts | "can- cancel" |
+| Run-together speech | "endin in four five three two" |
 
 ---
 
 ## Summary
 
 ### Dataset Statistics
-- **Total examples:** 123 (62 train + 61 test)
-- **Multi-turn ratio:** ~35% (up from ~25%)
-- **3-turn examples:** 8 total (6.5%)
-- **Function coverage:** 100% (all 14 functions)
-
-### Strengths
-- All 14 functions covered in both train and test sets
-- Good balance between train and test distributions
-- Strong representation of multi-turn slot-filling conversations
-- Variety of parameter combinations (full, partial, empty)
-- Progressive slot-filling patterns (1→2→3 turns)
-
-### Potential Future Improvements
-- Add more examples for `greeting`, `thank_you` (currently lowest counts)
-- Add edge cases with unusual phrasings or ASR errors
-- Consider adding more `from_account` examples for `pay_bill`
+- **Total conversations:** 100 (50 train + 50 test)
+- **All multi-turn:** 100% (no single-turn examples)
+- **Complete conversations:** all end with `goodbye`
+- **Function coverage:** 100% (all 14 functions in both splits)

@@ -31,10 +31,10 @@ Enterprise voice assistants follow a cascaded pipeline: ASR (speech-to-text) -> 
 | Model | Parameters | Single-Turn Tool Call Accuracy | Model Link |
 |---|---|---|---|
 | GPT-oss-120B (teacher) | 120B | 87.5% | |
-| **Qwen3-0.6B (tuned)** | **0.6B** | **90.4%** | [HuggingFace](https://huggingface.co/distil-labs/distil-qwen3-0.6b-voice-assistant-banking) |
-| Qwen3-0.6B (base) | 0.6B | 38.5% | |
+| **Qwen3-0.6B (tuned)** | **0.6B** | **90.9%** | [HuggingFace](https://huggingface.co/distil-labs/distil-qwen3-0.6b-voice-assistant-banking) |
+| Qwen3-0.6B (base) | 0.6B | 48.7% | |
 
-The tuned 0.6B model **exceeds the 120B teacher** on single-turn tool call accuracy while being **200x smaller** and running locally. The base Qwen3-0.6B only achieves 38.5% per turn. Fine-tuning is essential.
+The tuned 0.6B model **exceeds the 120B teacher** on single-turn tool call accuracy while being **200x smaller** and running locally. The base Qwen3-0.6B only achieves 48.7% per turn. Fine-tuning is essential.
 
 
 ## Quick Start
@@ -152,7 +152,7 @@ Bot: Your checking balance is $2,847.32.
 
 Voice assistants handling defined workflows don't need open-ended generation. They perform a narrow set of tasks: intent classification, slot extraction, and dialogue state tracking. These are classification and extraction tasks, and they are exactly the kind of narrow, well-defined tasks where small language models can shine, if properly trained.
 
-And accuracy compounds across turns. In multi-turn conversations, the probability of getting every turn right is roughly the single-turn accuracy raised to the number of turns. A model with 90% single-turn accuracy drops to about 73% over a 3-turn conversation (0.9^3). At 38.5% single-turn accuracy, which is where the base Qwen3-0.6B lands, a 3-turn conversation succeeds only about 5.7% of the time (0.385^3). Every percentage point of single-turn accuracy matters enormously once you compound it across a real conversation.
+And accuracy compounds across turns. In multi-turn conversations, the probability of getting every turn right is roughly the single-turn accuracy raised to the number of turns. A model with 90% single-turn accuracy drops to about 73% over a 3-turn conversation (0.9^3). At 48.7% single-turn accuracy, which is where the base Qwen3-0.6B lands, a 3-turn conversation succeeds only about 11.6% of the time (0.487^3). Every percentage point of single-turn accuracy matters enormously once you compound it across a real conversation.
 
 Key requirements:
 
@@ -165,7 +165,7 @@ Key requirements:
 
 Before investing in training, we needed to confirm that off-the-shelf small models can't already do this. We tested Qwen3-0.6B on our test set of 48 banking conversations.
 
-The base model achieved **38.5% single-turn tool call accuracy**, worse than a coin flip for most intents, and roughly 5.7% over a 3-turn conversation. Common failure modes:
+The base model achieved **48.7% single-turn tool call accuracy**, worse than a coin flip for most intents, and roughly 11.6% over a 3-turn conversation. Common failure modes:
 
 * **Free-text responses instead of JSON:** the model generates conversational replies like "I can help you with that!" instead of structured function calls
 * **Hallucinated function names:** the model invents functions not in the catalog, like `get_account_info` or `help_user`
@@ -256,10 +256,10 @@ See [`slm-finetuning/`](slm-finetuning/) for the full training data and configur
 | Model | Parameters | Single-Turn Tool Call Accuracy | Size Reduction |
 |---|---|---|---|
 | GPT-oss-120B (teacher) | 120B | 87.5% | — |
-| **Qwen3-0.6B (tuned)** | **0.6B** | **90.4%** | **200x** |
-| Qwen3-0.6B (base) | 0.6B | 38.5% | — |
+| **Qwen3-0.6B (tuned)** | **0.6B** | **90.9%** | **200x** |
+| Qwen3-0.6B (base) | 0.6B | 48.7% | — |
 
-The tuned student **exceeds the 120B teacher by nearly 3 points** on single-turn accuracy while being 200x smaller. The base model is essentially unusable at 38.5% per turn, which compounds to about 5.7% over a typical 3-turn banking conversation. The synthetic data generation and fine-tuning pipeline is what closes the gap, turning a model that can't follow the tool schema into one that outperforms a 120B general-purpose LLM on this specific task.
+The tuned student **exceeds the 120B teacher by nearly 3 points** on single-turn accuracy while being 200x smaller. The base model is essentially unusable at 48.7% per turn, which compounds to about 11.6% over a typical 3-turn banking conversation. The synthetic data generation and fine-tuning pipeline is what closes the gap, turning a model that can't follow the tool schema into one that outperforms a 120B general-purpose LLM on this specific task.
 
 You might be asking how a 0.6B model can outperform a 120B teacher. Two reasons: first, the data validators in our pipeline filter out the teacher's mistakes, so the student trains only on high-quality examples. Second, the student specializes entirely on this one task, allocating all its capacity to banking intent routing rather than spreading it across general capabilities. More details on this in our [benchmarking post](https://www.distillabs.ai/blog/benchmarking-the-platform/?utm_source=github&utm_medium=referral&utm_campaign=voice-assistant).
 
@@ -402,7 +402,7 @@ You can, but latency matters for voice. Cloud LLMs add 375-750ms per turn just f
 
 **Q: Why not use a small model without fine-tuning?**
 
-The base Qwen3-0.6B achieves only 38.5% single-turn tool call accuracy on our test set, which compounds to roughly 5.7% over a 3-turn conversation. It generates free text instead of JSON, hallucinates function names, and loses context across turns. Fine-tuning raises single-turn accuracy to 90.4%, which is essential for reliable multi-turn conversations.
+The base Qwen3-0.6B achieves only 48.7% single-turn tool call accuracy on our test set, which compounds to roughly 11.6% over a 3-turn conversation. It generates free text instead of JSON, hallucinates function names, and loses context across turns. Fine-tuning raises single-turn accuracy to 90.9%, which is essential for reliable multi-turn conversations.
 
 **Q: Can I use cloud ASR/TTS instead of local models?**
 
@@ -414,7 +414,7 @@ The full pipeline (ASR + SLM + TTS) runs on a MacBook with Apple Silicon using M
 
 **Q: The model makes an incorrect tool call. What can I do?**
 
-The model achieves 90.4% accuracy, which means roughly 1 in 10 tool calls may be wrong. Track the failure cases, add them to `slm-finetuning/data/train.jsonl`, and retrain. The orchestrator's slot elicitation will still guide the user to a correct outcome for most errors.
+The model achieves 90.9% accuracy, which means roughly 1 in 10 tool calls may be wrong. Track the failure cases, add them to `slm-finetuning/data/train.jsonl`, and retrain. The orchestrator's slot elicitation will still guide the user to a correct outcome for most errors.
 
 **Q: Can you train a model for my company's specific voice workflows?**
 
