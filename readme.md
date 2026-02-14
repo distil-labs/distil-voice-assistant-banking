@@ -81,7 +81,8 @@ This installs all Python packages and the SoX system binary. The `qwen-asr` and 
 ```bash
 llama-server \
     --model models/Qwen3-voice-assistant-slm-0.6B-gguf/Qwen3-voice-assistant-slm-0.6B.gguf \
-    --port 8000
+    --port 8000 \
+    --jinja
 ```
 
 ### 4. Run the assistant
