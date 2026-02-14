@@ -63,7 +63,7 @@ huggingface-cli download Qwen/Qwen3-ASR-0.6B --local-dir models/Qwen3-ASR-0.6B
 huggingface-cli download Qwen/Qwen3-TTS-12Hz-0.6B-Base --local-dir models/Qwen3-TTS-12Hz-0.6B-Base
 
 # SLM (fine-tuned intent router)
-huggingface-cli download distil-labs/distil-qwen3-0.6b-voice-assistant-banking --local-dir models/Qwen3-voice-assistant-slm-0.6B-gguf
+huggingface-cli download distil-labs/distil-qwen3-0.6b-voice-assistant-banking-gguf --local-dir models/Qwen3-voice-assistant-slm-0.6B-gguf
 ```
 
 The `assets/` directory ships with the repo and includes the default TTS reference voice clip.
