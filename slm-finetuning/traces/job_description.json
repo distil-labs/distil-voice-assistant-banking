@@ -1,0 +1,293 @@
+{
+  "task_description": "You are a voice assistant for BankCo, a retail bank. The user input is automatically transcribed speech from an ASR system, so it may contain transcription errors, homophones, filler words, or unusual phrasings. Parse the user's request and return the appropriate function call despite any transcription artifacts. If you can identify the intent, call the matching function. Extract any mentioned argument values; omit arguments not mentioned. If you cannot understand what the user wants, call intent_unclear(). Use conversation history to understand context from previous turns.",
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "check_balance",
+        "description": "Check the balance of a bank account",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "account_type": {
+              "type": "string",
+              "enum": ["checking", "savings", "credit"],
+              "description": "Type of account to check balance for"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "get_statement",
+        "description": "Request an account statement to be sent to the user",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "account_type": {
+              "type": "string",
+              "enum": ["checking", "savings", "credit"],
+              "description": "Type of account to get statement for"
+            },
+            "period": {
+              "type": "string",
+              "enum": ["last_month", "last_3_months", "last_year"],
+              "description": "Time period for the statement"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "transfer_money",
+        "description": "Transfer money between the user's own bank accounts",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number",
+              "description": "Amount to transfer in dollars"
+            },
+            "from_account": {
+              "type": "string",
+              "enum": ["checking", "savings"],
+              "description": "Account to transfer money from"
+            },
+            "to_account": {
+              "type": "string",
+              "enum": ["checking", "savings"],
+              "description": "Account to transfer money to"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "cancel_card",
+        "description": "Cancel and deactivate a bank card",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "card_type": {
+              "type": "string",
+              "enum": ["credit", "debit"],
+              "description": "Type of card to cancel"
+            },
+            "card_last_four": {
+              "type": "string",
+              "description": "Last 4 digits of the card number"
+            },
+            "reason": {
+              "type": "string",
+              "enum": ["lost", "stolen", "damaged", "other"],
+              "description": "Reason for cancelling the card"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "replace_card",
+        "description": "Request a replacement card to be sent to the user",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "card_type": {
+              "type": "string",
+              "enum": ["credit", "debit"],
+              "description": "Type of card to replace"
+            },
+            "card_last_four": {
+              "type": "string",
+              "description": "Last 4 digits of the card number"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "activate_card",
+        "description": "Activate a new card that was received in the mail",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "card_last_four": {
+              "type": "string",
+              "description": "Last 4 digits of the card number to activate"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "report_fraud",
+        "description": "Report a fraudulent or unauthorized transaction on a card",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "card_type": {
+              "type": "string",
+              "enum": ["credit", "debit"],
+              "description": "Type of card with fraudulent activity"
+            },
+            "card_last_four": {
+              "type": "string",
+              "description": "Last 4 digits of the card number"
+            },
+            "transaction_amount": {
+              "type": "number",
+              "description": "Amount of the fraudulent transaction in dollars"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "reset_pin",
+        "description": "Reset the PIN for a bank card",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "card_type": {
+              "type": "string",
+              "enum": ["credit", "debit"],
+              "description": "Type of card to reset PIN for"
+            },
+            "card_last_four": {
+              "type": "string",
+              "description": "Last 4 digits of the card number"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "pay_bill",
+        "description": "Pay a bill to a company or service provider",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "payee": {
+              "type": "string",
+              "description": "Name of the company or person to pay"
+            },
+            "amount": {
+              "type": "number",
+              "description": "Amount to pay in dollars"
+            },
+            "from_account": {
+              "type": "string",
+              "enum": ["checking", "savings"],
+              "description": "Account to pay from"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "speak_to_human",
+        "description": "Connect the user to a human customer service agent",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "department": {
+              "type": "string",
+              "enum": ["general", "fraud", "loans", "technical"],
+              "description": "Department to connect to"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "intent_unclear",
+        "description": "Use when the user's intent cannot be determined from their message",
+        "parameters": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "greeting",
+        "description": "User is greeting or starting the conversation",
+        "parameters": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "goodbye",
+        "description": "User is ending the conversation",
+        "parameters": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "thank_you",
+        "description": "User is expressing gratitude or thanks",
+        "parameters": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

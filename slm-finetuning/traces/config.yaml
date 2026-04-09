@@ -1,0 +1,14 @@
+base:
+  task: multi-turn-tool-calling-closed-book
+  student_model_name: Qwen3-0.6B
+  teacher_model_name: zai.glm-5
+synthgen:
+  parallel_llm_calls: true
+trace_processing:
+  convert_to_single_turn: false
+  num_traces_as_training_base: 40
+  num_traces_as_testing_base: 40
+  teacher_model_name: zai.glm-5
+  relabelling_committee_models:
+    - zai.glm-5
+    - openai.gpt-oss-120b
