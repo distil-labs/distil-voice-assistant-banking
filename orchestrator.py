@@ -406,12 +406,12 @@ SYSTEM_PROMPT = {
 
 
 class SLMClient:
-    """Lightweight client for a llama.cpp / Ollama / vLLM server."""
+    """Lightweight client for a llama.cpp / Ollama / vLLM / remote server."""
 
-    def __init__(self, model_name: str, api_key: str = "EMPTY", port: int = 11434):
+    def __init__(self, model_name: str, api_key: str, base_url: str):
         self.model_name = model_name
         self.client = OpenAI(
-            base_url=f"http://127.0.0.1:{port}/v1",
+            base_url=base_url,
             api_key=api_key,
         )
 
@@ -586,11 +586,15 @@ def main() -> None:
         "--api-key", type=str, default="EMPTY", help="API key (default EMPTY)"
     )
     parser.add_argument(
+        "--base-url", type=str, default=None, help="Base URL for remote deployment (overrides --port)"
+    )
+    parser.add_argument(
         "--debug", action="store_true", help="Print raw SLM output each turn"
     )
     args = parser.parse_args()
 
-    slm = SLMClient(model_name=args.model, api_key=args.api_key, port=args.port)
+    base_url = args.base_url or f"http://127.0.0.1:{args.port}/v1"
+    slm = SLMClient(model_name=args.model, api_key=args.api_key, base_url=base_url)
     orchestrator = TextOrchestrator(slm, debug=args.debug)
 
     print("BankCo Assistant (type 'quit' or 'exit' to stop)\n")

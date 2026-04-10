@@ -117,6 +117,7 @@ def main() -> None:
     parser.add_argument("--slm-model", type=str, default="model", help="Model name served by the SLM backend")
     parser.add_argument("--slm-port", type=int, default=8000, help="Port of the OpenAI-compatible SLM server")
     parser.add_argument("--api-key", type=str, default="EMPTY", help="API key for SLM server")
+    parser.add_argument("--base-url", type=str, default=None, help="Base URL for remote deployment (overrides --slm-port)")
 
     # ASR
     parser.add_argument("--asr-model", type=str, default="models/Qwen3-ASR-0.6B", help="Path to ASR model weights")
@@ -143,7 +144,8 @@ def main() -> None:
         device=args.device,
     )
 
-    slm = SLMClient(model_name=args.slm_model, api_key=args.api_key, port=args.slm_port)
+    base_url = args.base_url or f"http://127.0.0.1:{args.slm_port}/v1"
+    slm = SLMClient(model_name=args.slm_model, api_key=args.api_key, base_url=base_url)
     orchestrator = TextOrchestrator(slm, debug=args.debug)
 
     # --- Run ---
