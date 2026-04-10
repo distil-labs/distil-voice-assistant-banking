@@ -496,6 +496,7 @@ class TextOrchestrator:
             "role": "assistant",
             "tool_calls": [
                 {
+                    "id": str(len(self.conversation_history)),
                     "type": "function",
                     "function": {
                         "name": function_call["name"],
